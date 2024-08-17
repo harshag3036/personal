@@ -1,1 +1,1 @@
-web: java -jar target/personal.jar
+web: java -jar target/personal-0.0.1-SNAPSHOT.jar
