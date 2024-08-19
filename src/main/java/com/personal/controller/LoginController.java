@@ -17,6 +17,12 @@ public class LoginController {
     @GetMapping("/login")
     public boolean login(@RequestParam String username, @RequestParam String password) {
         log.info("Login called with username: {} and password: {}", username, password);
-        return true;
+        return loginService.login(username, password);
+    }
+
+    @PostMapping("/signin")
+    public boolean signIn(@RequestParam String username, @RequestParam String password) {
+        log.info("SignIn called with username: {} and password: {}", username, password);
+        return loginService.signIn(username, password);
     }
 }
