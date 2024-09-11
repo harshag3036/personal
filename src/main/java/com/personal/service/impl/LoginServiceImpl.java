@@ -31,4 +31,6 @@ public class LoginServiceImpl implements LoginService {
         loginTableRepository.save(loginEntity);
         return true;
     }
+
+
 }
