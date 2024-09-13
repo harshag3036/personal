@@ -25,4 +25,6 @@ public class LoginController {
         log.info("SignIn called with username: {} and password: {}", username, password);
         return loginService.signIn(username, password);
     }
+
+
 }
