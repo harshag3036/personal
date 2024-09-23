@@ -1,8 +1,12 @@
 package com.personal.controller;
 
+import com.personal.model.response.AuthResponse;
 import com.personal.service.LoginService;
+import com.personal.util.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -14,16 +18,42 @@ public class LoginController {
     @Autowired
     LoginService loginService;
 
-    @GetMapping("/login")
-    public boolean login(@RequestParam String username, @RequestParam String password) {
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestParam String username, @RequestParam String password) {
         log.info("Login called with username: {} and password: {}", username, password);
-        return loginService.login(username, password);
+
+        // Authenticate the user
+        if (loginService.login(username, password)) {
+            // Retrieve the customerId from the database
+            String customerId = loginService.getCustomerIdByUsername(username);
+
+            // Generate JWT token with username and customerId
+            String token = JwtUtil.generateToken(username, customerId);
+
+            return ResponseEntity.ok(new AuthResponse(token,true));
+        } else {
+            // Return unauthorized response if login fails
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid Credentials");
+        }
     }
 
     @PostMapping("/signin")
-    public boolean signIn(@RequestParam String username, @RequestParam String password) {
+    public ResponseEntity<?> signIn(@RequestParam String username, @RequestParam String password) {
         log.info("SignIn called with username: {} and password: {}", username, password);
-        return loginService.signIn(username, password);
+
+        // Authenticate the user (Sign-up logic)
+        if (loginService.signIn(username, password)) {
+            // Retrieve the customerId after sign-in
+            String customerId = loginService.getCustomerIdByUsername(username);
+
+            // Generate JWT token with username and customerId
+            String token = JwtUtil.generateToken(username, customerId);
+
+            return ResponseEntity.ok(new AuthResponse(token,true));
+        } else {
+            // Return unauthorized response if sign-in fails
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Sign-in Failed");
+        }
     }
 
 
