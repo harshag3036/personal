@@ -1,20 +1,18 @@
 package com.personal.model.db;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.UUID;
 
 @Entity
 @Table(name = "login")
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class LoginEntity {
+public class LoginEntity extends AuditModel{
 
     @Id
     @GeneratedValue(generator = "UUID")

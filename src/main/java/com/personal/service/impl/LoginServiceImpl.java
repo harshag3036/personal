@@ -1,11 +1,14 @@
 package com.personal.service.impl;
 
 import com.personal.model.db.LoginEntity;
+import com.personal.repository.CustomerRepository;
 import com.personal.repository.LoginTableRepository;
 import com.personal.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.apache.commons.lang3.ObjectUtils;
 
+import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -13,6 +16,9 @@ public class LoginServiceImpl implements LoginService {
 
     @Autowired
     LoginTableRepository loginTableRepository;
+
+    @Autowired
+    CustomerRepository customerRepository;
     public boolean login(String username, String password) {
         LoginEntity loginEntity = loginTableRepository.findByUsername(username).orElse(null);
         if (loginEntity == null) {
@@ -37,7 +43,12 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public String getCustomerIdByUsername(String username) {
-        return loginTableRepository.findByUsername(username).orElse(null).getCustomerId().toString();
+        return Objects.requireNonNull(loginTableRepository.findByUsername(username).orElse(null)).getCustomerId().toString();
+    }
+
+    @Override
+    public Boolean checkFirstTimeLogin(String customerId) {
+        return ObjectUtils.isEmpty(customerRepository.findById(UUID.fromString(customerId)).orElse(null));
     }
 
 

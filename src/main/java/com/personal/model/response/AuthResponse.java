@@ -11,4 +11,5 @@ public class AuthResponse {
 
     String token;
     Boolean valid;
+    Boolean firstLogin;
 }

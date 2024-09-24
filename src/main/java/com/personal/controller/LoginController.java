@@ -29,8 +29,8 @@ public class LoginController {
 
             // Generate JWT token with username and customerId
             String token = JwtUtil.generateToken(username, customerId);
-
-            return ResponseEntity.ok(new AuthResponse(token,true));
+            Boolean firstLogin = loginService.checkFirstTimeLogin(customerId);
+            return ResponseEntity.ok(new AuthResponse(token,true,firstLogin));
         } else {
             // Return unauthorized response if login fails
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid Credentials");
@@ -49,7 +49,8 @@ public class LoginController {
             // Generate JWT token with username and customerId
             String token = JwtUtil.generateToken(username, customerId);
 
-            return ResponseEntity.ok(new AuthResponse(token,true));
+            Boolean firstLogin = loginService.checkFirstTimeLogin(customerId);
+            return ResponseEntity.ok(new AuthResponse(token,true,firstLogin));
         } else {
             // Return unauthorized response if sign-in fails
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Sign-in Failed");

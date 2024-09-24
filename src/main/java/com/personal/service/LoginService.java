@@ -6,4 +6,6 @@ public interface LoginService {
     public boolean signIn(String username, String password);
 
     String getCustomerIdByUsername(String username);
+
+    Boolean checkFirstTimeLogin(String customerId);
 }
