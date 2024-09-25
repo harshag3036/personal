@@ -18,6 +18,8 @@
 
 	<properties>
 		<java.version>17</java.version>
+		<org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
+		<error_prone_core.version>2.4.0</error_prone_core.version>
 	</properties>
 
 	<dependencies>
@@ -49,7 +51,12 @@
 			<artifactId>commons-lang3</artifactId>
 			<version>3.17.0</version>
 		</dependency>
-
+		<dependency>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct</artifactId>
+			<version>${org.mapstruct.version}</version>
+			<scope>provided</scope>
+		</dependency>
 		<dependency>
 			<groupId>me.xdrop</groupId>
 			<artifactId>fuzzywuzzy</artifactId>
@@ -92,12 +99,40 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.8.1</version>
+				<version>${maven-compiler-plugin.version}</version>
 				<configuration>
 					<source>${java.version}</source>
 					<target>${java.version}</target>
+					<encoding>${project.build.sourceEncoding}</encoding>
+					<compilerArgs>
+						<arg>-XDcompilePolicy=simple</arg>
+						<!--						<arg>-->
+						<!--							-Xplugin:ErrorProne-->
+						<!--							&lt;!&ndash; exclude unused variable check as error_prone fails due to lombok annotations &ndash;&gt;-->
+						<!--							-Xep:UnusedVariable:OFF-->
+						<!--						</arg>-->
+					</compilerArgs>
+					<!-- Both lombok and mapstruct are required to work with each other -->
+					<annotationProcessorPaths>
+						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+							<version>${lombok.version}</version>
+						</path>
+						<path>
+							<groupId>org.mapstruct</groupId>
+							<artifactId>mapstruct-processor</artifactId>
+							<version>${org.mapstruct.version}</version>
+						</path>
+						<path>
+							<groupId>com.google.errorprone</groupId>
+							<artifactId>error_prone_core</artifactId>
+							<version>${error_prone_core.version}</version>
+						</path>
+					</annotationProcessorPaths>
 				</configuration>
 			</plugin>
+
 		</plugins>
 	</build>
 </project>

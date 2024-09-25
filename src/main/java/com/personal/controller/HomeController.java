@@ -19,6 +19,8 @@ public class HomeController {
     @Autowired
     private HomeService homeService;
 
+
+
     @GetMapping("/home")
     public ResponseEntity<?> openHomePage(@RequestHeader("Authorization") String token) {
         // Extract the token from the "Bearer" prefix
@@ -51,5 +53,21 @@ public class HomeController {
         homeService.saveCustomerData(createCustomerRequest, customerId);
         // Return customerId (or other user-specific data)
         return ResponseEntity.ok("Customer Data for ID: " + customerId);
+    }
+
+    @GetMapping("/customerData")
+    public ResponseEntity<?> saveCustomerData(@RequestHeader("Authorization") String token){
+        // Extract the token from the "Bearer" prefix
+        String jwtToken = token.substring(7);
+
+        // Validate the token
+        if (JwtUtil.isTokenExpired(jwtToken)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid or expired token");
+        }
+
+        // Extract customerId from the token
+        String customerId = JwtUtil.extractCustomerId(jwtToken);
+        // Return customerId (or other user-specific data)
+        return ResponseEntity.ok(homeService.getCustomerData(customerId));
     }
 }
