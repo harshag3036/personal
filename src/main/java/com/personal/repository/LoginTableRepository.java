@@ -10,5 +10,7 @@ import java.util.UUID;
 @Repository
 public interface LoginTableRepository extends JpaRepository<LoginEntity, UUID> {
     Optional<LoginEntity> findByUsername(String username);
+
+    Optional<LoginEntity> findByCustomerId(UUID customerId);
 }
 

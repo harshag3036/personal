@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping(path = "${api.v1.prefix}")
 @Slf4j
@@ -30,7 +32,7 @@ public class LoginController {
             // Generate JWT token with username and customerId
             String token = JwtUtil.generateToken(username, customerId);
             Boolean firstLogin = loginService.checkFirstTimeLogin(customerId);
-            return ResponseEntity.ok(new AuthResponse(token,true,firstLogin));
+            return ResponseEntity.ok(new AuthResponse(token,true,firstLogin,UUID.fromString(customerId)));
         } else {
             // Return unauthorized response if login fails
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid Credentials");
@@ -50,7 +52,7 @@ public class LoginController {
             String token = JwtUtil.generateToken(username, customerId);
 
             Boolean firstLogin = loginService.checkFirstTimeLogin(customerId);
-            return ResponseEntity.ok(new AuthResponse(token,true,firstLogin));
+            return ResponseEntity.ok(new AuthResponse(token,true,firstLogin, UUID.fromString(customerId)));
         } else {
             // Return unauthorized response if sign-in fails
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Sign-in Failed");
