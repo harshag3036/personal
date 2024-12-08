@@ -4,18 +4,38 @@
         {
             "Effect": "Allow",
             "Action": [
+                "codecommit:BatchGet*",
+                "codecommit:BatchDescribe*",
+                "codecommit:Create*",
+                "codecommit:DeleteBranch",
+                "codecommit:Get*",
+                "codecommit:List*",
+                "codecommit:Describe*",
+                "codecommit:Put*",
+                "codecommit:Post*",
+                "codecommit:Merge*",
+                "codecommit:Test*",
+                "codecommit:Update*",
                 "codecommit:GitPull",
                 "codecommit:GitPush",
-                "codecommit:GitBranch",
-                "codecommit:ListBranches",
-                "codecommit:CreateBranch",
-                "codecommit:DeleteBranch",
-                "codecommit:GetBranch",
-                "codecommit:GetCommit",
-                "codecommit:GetRepository",
-                "codecommit:ListRepositories"
+                "codecommit:*"
             ],
-            "Resource": "arn:aws:codecommit:ap-south-1:677276091918:*"
+            "Resource": "arn:aws:codecommit:ap-south-1:677276091918:main"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "iam:CreateServiceSpecificCredential",
+                "iam:ListServiceSpecificCredentials",
+                "iam:DeleteServiceSpecificCredential",
+                "iam:ResetServiceSpecificCredential",
+                "iam:UpdateServiceSpecificCredential",
+                "iam:UploadSSHPublicKey",
+                "iam:DeleteSSHPublicKey",
+                "iam:ListSSHPublicKeys",
+                "iam:GetSSHPublicKey"
+            ],
+            "Resource": "arn:aws:iam::677276091918:user/basic-101"
         }
     ]
 }

@@ -26,5 +26,6 @@ public class CommentsEntity extends AuditModel {
     @Column(name = "post_id")
     private UUID postId;
 
+    @Builder.Default
     private Integer likes = 0;
 }
