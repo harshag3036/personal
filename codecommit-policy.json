@@ -1,0 +1,21 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "codecommit:GitPull",
+                "codecommit:GitPush",
+                "codecommit:GitBranch",
+                "codecommit:ListBranches",
+                "codecommit:CreateBranch",
+                "codecommit:DeleteBranch",
+                "codecommit:GetBranch",
+                "codecommit:GetCommit",
+                "codecommit:GetRepository",
+                "codecommit:ListRepositories"
+            ],
+            "Resource": "arn:aws:codecommit:ap-south-1:677276091918:*"
+        }
+    ]
+}
