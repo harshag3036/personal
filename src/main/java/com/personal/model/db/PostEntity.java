@@ -18,7 +18,11 @@ public class PostEntity extends AuditModel {
     @Column(name = "post_id")
     @GeneratedValue(generator = "UUID")
     private UUID postId;
+
     private String title;
+
+    @Column(columnDefinition = "TEXT")
     private String content;
+
     private UUID customerId;
 }
