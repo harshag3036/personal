@@ -1,1 +1,1 @@
-web: java -jar -Dserver.port=5000 target/personal-0.0.1-SNAPSHOT.jar
+web: java -Dserver.port=$PORT $JAVA_OPTS -jar target/personal.jar
