@@ -22,7 +22,7 @@ public class ChatBotController {
         return chatBotService.addChatBotData(addChatBotDataRequest);
     }
 
-    @GetMapping("/chatBot/response")
+    @PostMapping("/chatBot/response")
     public List<String> getResponseFromWords(@RequestBody String message) {
         log.info("ChatBot response called for - {}",message);
         return chatBotService.getResponseFromWords(message);
