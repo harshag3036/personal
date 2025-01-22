@@ -2,21 +2,19 @@ package com.personal;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+import org.springframework.web.WebApplicationInitializer;
 
 @SpringBootApplication
-@Controller
-public class PersonalApplication {
+public class PersonalApplication extends SpringBootServletInitializer implements WebApplicationInitializer {
 
-	@RequestMapping("/")
-	@ResponseBody
-	String home() {
-		return "Hello World!";
-	}
-	public static void main(String[] args) {
-		SpringApplication.run(PersonalApplication.class, args);
-	}
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+        return application.sources(PersonalApplication.class);
+    }
 
+    public static void main(String[] args) {
+        SpringApplication.run(PersonalApplication.class, args);
+    }
 }
