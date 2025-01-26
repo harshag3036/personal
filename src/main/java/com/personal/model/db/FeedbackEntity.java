@@ -7,19 +7,18 @@ import java.util.UUID;
 
 @Entity
 @EqualsAndHashCode(callSuper = true)
-@Table(name = "chat_data")
+@Table(name = "feedback")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ChatDataEntity extends AuditModel{
-    @Id
-    @Column(name = "data_id")
-    @GeneratedValue(generator = "UUID")
-    private UUID dataId;
+public class FeedbackEntity extends AuditModel{
 
-    private String keywords;
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(generator = "UUID")
+    private UUID id;
 
     @Column(columnDefinition = "TEXT")
-    private String response;
+    private String feedback;
 }
