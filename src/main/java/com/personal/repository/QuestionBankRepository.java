@@ -25,6 +25,6 @@ public interface QuestionBankRepository extends JpaRepository<QuestionBankEntity
     @Query("SELECT DISTINCT q.subject FROM QuestionBankEntity q WHERE q.subject IS NOT NULL ORDER BY q.subject")
     List<String> findAllDistinctSubjects();
     
-    @Query("SELECT q FROM QuestionBankEntity q WHERE q.subject = :subject AND q.reference = :reference ORDER BY q.createdAt")
+    @Query("SELECT q FROM QuestionBankEntity q WHERE q.subject = :subject AND q.reference = :reference ORDER BY q.difficultyLevel DESC")
     List<QuestionBankEntity> findBySubjectAndReference(String subject, String reference);
 }
