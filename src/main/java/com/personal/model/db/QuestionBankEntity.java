@@ -42,7 +42,7 @@ public class QuestionBankEntity extends AuditModel {
     @Column(name = "includes_diagram")
     private Boolean includesDiagram;
 
-    @Column(name = "blooms_tagging")
+    @Column(name = "blooms_tagging", length = 1000)
     private String bloomsTagging;
 
     @Column(name = "difficulty_level")
@@ -71,4 +71,9 @@ public class QuestionBankEntity extends AuditModel {
     @Type(value = JsonBinaryType.class)
     @Column(name = "final_answer", columnDefinition = "json")
     private List<String> finalAnswer;
+
+    @Column(name = "reference")
+    private String reference;
+
+
 }

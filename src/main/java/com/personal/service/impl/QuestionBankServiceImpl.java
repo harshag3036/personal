@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.personal.model.db.QuestionBankEntity;
 import com.personal.model.request.CreateQuestionBankRequest;
 import com.personal.model.response.QuestionBankDetailResponse;
+import com.personal.model.response.QuestionIdWithSequence;
 import com.personal.repository.QuestionBankRepository;
 import com.personal.service.QuestionBankService;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -115,6 +117,53 @@ public class QuestionBankServiceImpl implements QuestionBankService {
             return Page.empty();
         }
         return questionBankEntities.map(this::mapEntityToResponse);
+    }
+
+    @Override
+    public List<String> getReferencesBySubject(String subject) {
+        log.info("Fetching references for subject: {}", subject);
+        List<String> references = questionBankRepository.findDistinctReferencesBySubject(subject);
+        if (references.isEmpty()) {
+            log.warn("No references found for subject: {}", subject);
+        }
+        return references;
+    }
+
+    @Override
+    public java.util.Map<String, List<String>> getAllReferencesBySubjects() {
+        log.info("Fetching all references grouped by subjects");
+        List<String> allSubjects = questionBankRepository.findAllDistinctSubjects();
+        
+        java.util.Map<String, List<String>> referencesBySubject = new java.util.HashMap<>();
+        for (String subject : allSubjects) {
+            List<String> references = questionBankRepository.findDistinctReferencesBySubject(subject);
+            if (!references.isEmpty()) {
+                referencesBySubject.put(subject, references);
+            }
+        }
+        
+        log.info("Found references for {} subjects", referencesBySubject.size());
+        return referencesBySubject;
+    }
+
+    @Override
+    public List<QuestionIdWithSequence> getQuestionIdsBySubjectAndReference(String subject, String reference) {
+        log.info("Fetching question IDs for subject: {} and reference: {}", subject, reference);
+        List<QuestionBankEntity> entities = questionBankRepository.findBySubjectAndReference(subject, reference);
+        
+        List<QuestionIdWithSequence> result = new ArrayList<>();
+        int sequenceNumber = 1;
+        
+        for (QuestionBankEntity entity : entities) {
+            QuestionIdWithSequence idWithSeq = QuestionIdWithSequence.builder()
+                    .id(sequenceNumber++)
+                    .questionId(entity.getQuestionId())
+                    .build();
+            result.add(idWithSeq);
+        }
+        
+        log.info("Found {} question IDs for subject: {} and reference: {}", result.size(), subject, reference);
+        return result;
     }
 
     private QuestionBankDetailResponse mapEntityToResponse(QuestionBankEntity entity) {
